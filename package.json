@@ -1,0 +1,29 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "description": "Test app",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "grunt",
+    "start": "node server",
+    "predev": "grunt",
+    "dev": "open http://localhost:3000 & node-dev app & grunt watch"
+  },
+  "author": "Johnathan LeBlanc",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^1.0.4",
+    "grunt-autoprefixer": "^3.0.4",
+    "grunt-contrib-jshint": "^2.1.0",
+    "grunt-contrib-less": "^2.0.0",
+    "grunt-contrib-watch": "^1.1.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongodb": "^3.2.3",
+    "mongoose": "^5.5.2",
+    "mysql": "^2.16.0",
+    "socket.io": "^2.2.0"
+  }
+}

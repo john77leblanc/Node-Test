@@ -1,0 +1,9 @@
+body {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+body h1 {
+  color: #155ba0;
+}

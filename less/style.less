@@ -1,0 +1,13 @@
+@mycolor: #155ba0;
+
+#box(@color) {
+    display: flex;
+    justify-content: space-around;
+    h1 {
+        color: @color;
+    }
+}
+
+body {
+    #box(@mycolor);
+}
