@@ -1,48 +1,44 @@
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
-const mongoose = require('mongoose');
-
-const dbUrl = 'mongodb+srv://Master:12test345@testcluster-xdi1l.mongodb.net/test?retryWrites=true';
-
-const Message = mongoose.model('Message', {
-    name: String,
-    message: String
-});
+const port = 3000;
 
 app.use(express.static(__dirname + "/public/"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/', (req, res) => {
-    console.log(req);
-})
+app.post('/requestData', (req, res) => {
+    let query = req.body;
 
-app.get('/messages', (req, res)=>{
-    Message.find({}, (err, messages) => {
-        res.send(messages);
-    });
+    let findUser = name => name.toLowerCase() === query.name.toLowerCase();
+
+    let users = fs.readFileSync('./lib/users.txt','utf8')
+        .trim()
+        .replace(/\r/g,"")
+        .split(/\n/);
+
+    let user = users.find(findUser);
+    if (user && fs.existsSync(`./lib/userData/${user}.json`)) {
+        let data = JSON.parse(fs.readFileSync(`./lib/userData/${user}.json`,'utf8')).data;
+        res.status(200).send(data);
+    } else {
+        let data = "User not found";
+        res.status(200).send(data);
+    }
 });
 
-app.post('/messages', (req, res)=>{
-    let message = new Message(req.body);
-
-    message.save().then(err=>{
-        if (err) sendStatus(500);
-        io.emit('message', req.body);
-        res.sendStatus(200);
-    });
+app.get('/names', (req, res) => {
+    let users = fs.readFileSync('./lib/users.txt','utf8')
+        .trim()
+        .replace(/\r/g,"")
+        .split(/\n/);
+    res.status(200).send(users);
 });
 
-io.on('connection', socket => console.log('a user connected'));
+app.get('/*', (req, res) => {
+    res.status(404).send("Page not found");
+});
 
-mongoose.connect(dbUrl,{useNewUrlParser: true},err => console.log("Database connection", err));
-
-const server = app.listen(3000, function () {
-    let host = server.address().address
-    let port = server.address().port
- 
-    console.log("Server listening at http://%s:%s", host, port)
- })
+const server = http.listen(port, () => console.log("App listening on port", port));
