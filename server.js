@@ -37,8 +37,8 @@ app.get('/names', (req, res) => {
     res.status(200).send(users);
 });
 
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
     res.status(404).send("Page not found");
 });
 
-const server = http.listen(port, () => console.log("App listening on port", port));
+http.listen(port, () => console.log("App listening on port", port));
