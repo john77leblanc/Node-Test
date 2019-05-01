@@ -29,6 +29,16 @@ app.post('/requestData', (req, res) => {
     }
 });
 
+app.post('/add-name', (req, res) => {
+    let query = req.body;
+    fs.appendFileSync('./lib/users.txt', '\n'+query.name);
+
+    let content = `{"username":"${query.name}","data":"${query.saying}"}`;
+    fs.writeFileSync(`./lib/userData/${query.name}.json`, content);
+
+    res.status(200).send("Hello");
+});
+
 app.get('/names', (req, res) => {
     let users = fs.readFileSync('./lib/users.txt','utf8')
         .trim()

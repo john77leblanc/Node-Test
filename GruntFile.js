@@ -29,7 +29,7 @@ module.exports = function(grunt) {
                 tasks: ["css"]
             },
             scripts: {
-                files: ["app-client.js","lib/*.js"],
+                files: ["server.js"],
                 tasks: ["jshint"]
             }
         }
@@ -41,6 +41,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-watch");
 
     grunt.registerTask("css", ["less", "autoprefixer"]);
-
+    grunt.registerTask("js", ["jshint"]);
     grunt.registerTask("default", ["jshint", "css"]);
 };
