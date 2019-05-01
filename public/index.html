@@ -23,16 +23,18 @@
                 <input type="text" v-model="name" class="form-control" placeholder="Name">
                 <br>
                 <button type="submit" @click.prevent="request_data" class="btn btn-success">Submit</button>
+                <div class="mt-3" v-show="message" v-cloak>
+                    <p>{{message}}</p>
+                </div>
             </div>
-            <div v-show="message" v-cloak>
-                <p>{{message}}</p>
-            </div>
+            <new-name-form></new-name-form>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         
         <script src="./usersList.js"></script>
         <script src="./testComponent.js"></script>
+        <script src="./newName.js"></script>
         
         <script>
             let vm = new Vue({
