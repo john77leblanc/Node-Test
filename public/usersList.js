@@ -1,19 +1,22 @@
 Vue.component('names-list', {
-    data: function() {
-        return {
-            names: [],
-        }
+    props: {
+        names: Array
     },
-    created: function() {
-        this.request_names();
-    },
-    methods: {
-        request_names: function() {
-            let self = this;
-            axios.get('./names')
-                .then(res => self.names = res.data);
-        }
-    },
+    // created: function() {
+    //     this.request_names();
+    // },
+    // methods: {
+    //     request_names: function() {
+    //         let self = this;
+    //         let req = {
+    //             params: {
+    //                 apiKey: "abc123"
+    //             }
+    //         };
+    //         axios.get('./names', req)
+    //             .then(res => self.names = res.data);
+    //     }
+    // },
     template:
     '<div> \
         <b>List of names available</b> \

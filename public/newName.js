@@ -1,26 +1,33 @@
 Vue.component('new-name-form', {
-    data: function() {
-        return {
-            name: '',
-            saying: ''
-        }
-    },
+    // data: function() {
+    //     return {
+    //         name: '',
+    //         saying: ''
+    //     }
+    // },
     methods: {
         postName: function() {
             let data = {
-                name: this.name,
-                saying: this.saying
+                // name: this.name,
+                // saying: this.saying
+                name: this.$refs.name.value,
+                saying: this.$refs.saying.value
             };
-            axios.post('./add-name', data)
-                .then(res => alert("Name and saying added"))
-                .catch(error => {if (error) alert("Error adding name")});
+            if (data.name && data.saying) {
+                let self = this;
+                axios.post('./add-name', data)
+                    .then(res => {
+                        self.$emit('new-name', data.name);
+                    })
+                    .catch(error => {if (error) alert("Error adding name")});
+            }
         }
     },
     template: 
     '<form> \
-        <input class="form-control" type="text" placeholder="Name" v-model="name"> \
+        <input class="form-control" type="text" placeholder="Name"  ref="name"> \
         <br> \
-        <input class="form-control" type="text" placeholder="Saying" v-model="saying"> \
+        <input class="form-control" type="text" placeholder="Saying"  ref="saying"> \
         <br> \
         <button type="submit" @click.prevent="postName" class="btn btn-success">Submit</button> \
     </form>'

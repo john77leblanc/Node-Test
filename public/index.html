@@ -14,20 +14,29 @@
     </style>
     <body>
         <div id="app" class="container">
-            <names-list></names-list>
+            <names-list v-bind:names="names"></names-list>
             <br>
             <div class="jumbotron">
-                <h1 class="display-4">Type your name</h1>
-                <p>Type your name to get a return value</p>
-                <br>
-                <input type="text" v-model="name" class="form-control" placeholder="Name">
-                <br>
-                <button type="submit" @click.prevent="request_data" class="btn btn-success">Submit</button>
-                <div class="mt-3" v-show="message" v-cloak>
-                    <p>{{message}}</p>
+                <div class="row">
+                    <div class="col-sm">
+                        <h2 class="display-4">Type your name</h2>
+                        <p>Type your name to get a return value.</p>
+                        <br>
+                        <input type="text" ref="name" class="form-control" placeholder="Name">
+                        <br>
+                        <button type="submit" @click.prevent="request_data" class="btn btn-success">Submit</button>
+                        <div class="mt-3" v-show="message" v-cloak>
+                            <p>{{message}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <h2 class="display-4">Add name</h2>
+                        <p>Add a name and saying to the database.</p>
+                        <br>
+                        <new-name-form v-on:new-name="updateNames($event)"></new-name-form>
+                    </div>
                 </div>
             </div>
-            <new-name-form></new-name-form>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -40,14 +49,30 @@
             let vm = new Vue({
                 el: '#app',
                 data: {
-                    name: '',
-                    message: ''
+                    message: '',
+                    names: []
+                },
+                created: function() {
+                    this.request_names();
                 },
                 methods: {
                     request_data: function() {
-                        let name = {name: this.name};
+                        let name = {name: this.$refs.name.value};
                         axios.post('./requestData', name)
                             .then(res => this.message = res.data);
+                    },
+                    request_names: function() {
+                        let self = this;
+                        let req = {
+                            params: {
+                                apiKey: "abc123"
+                            }
+                        };
+                        axios.get('./names', req)
+                            .then(res => self.names = res.data);
+                    },
+                    updateNames: function(name) {
+                        this.names.push(name);
                     }
                 }
             });
